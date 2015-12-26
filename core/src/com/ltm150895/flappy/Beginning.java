@@ -11,8 +11,8 @@ import com.ltm150895.flappy.States.MenuState;
 public class Beginning extends ApplicationAdapter {
 
 	public static final int WIDTH = 480;
-	public static final int HEIGHT = 820;
-	public static final String TITLE = "Flappy Bird";
+	public static final int HEIGHT = 720;
+	public static final String TITLE = "Intento 1";
 
 	private GameStateManager gsm;
 	private SpriteBatch batch;
