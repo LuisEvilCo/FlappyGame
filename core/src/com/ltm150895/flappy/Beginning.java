@@ -26,7 +26,7 @@ public class Beginning extends ApplicationAdapter {
 		gsm = new GameStateManager();
 		music = Gdx.audio.newMusic(Gdx.files.internal("cotton.mp3"));
 		music.setLooping(true);
-		music.setVolume(0.2f);
+		music.setVolume(0.3f);
 		music.play();
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		gsm.push(new MenuState(gsm));

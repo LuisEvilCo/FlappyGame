@@ -48,7 +48,8 @@ public class PlayState extends State {
     }
 
     private void dead(){
-        gsm.set(new PlayState(gsm));
+        //gsm.set(new PlayState(gsm));
+        gsm.set(new MenuState(gsm));
     }
 
     @Override
