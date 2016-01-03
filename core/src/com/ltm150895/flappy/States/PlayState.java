@@ -2,7 +2,9 @@ package com.ltm150895.flappy.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.ltm150895.flappy.Beginning;
@@ -25,9 +27,12 @@ public class PlayState extends State {
     private Vector2 groundPos1 , groundPos2;
 
     private Array<Tube> tubes;
+
+    private GlyphLayout glyphLayout;
+    private float scoreStringWidth;
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        bird = new Bird(50,100);
+        bird = new Bird(25,Beginning.HEIGHT/2);
         cam.setToOrtho(false, Beginning.WIDTH /2, Beginning.HEIGHT / 2);
         bg = new Texture("bg.png");
 
@@ -36,10 +41,13 @@ public class PlayState extends State {
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
 
         tubes = new Array<Tube>();
-
         for(int i = 1 ; i <= TUBE_COUNT ; i+=1){
             tubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
         }
+
+        glyphLayout = new GlyphLayout();
+        glyphLayout.setText(Beginning.titleFont, Integer.toString(score));
+        scoreStringWidth = glyphLayout.width;
     }
 
     @Override
@@ -81,6 +89,8 @@ public class PlayState extends State {
             dead();
         }
 
+        glyphLayout.setText(Beginning.titleFont, Integer.toString(score));
+
         cam.update();
     }
 
@@ -96,6 +106,7 @@ public class PlayState extends State {
         }
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
+        Beginning.titleFont.draw(sb,glyphLayout, cam.position.x - scoreStringWidth / 2 , cam.position.y + Gdx.graphics.getHeight() / 8);
         sb.end();
     }
 
