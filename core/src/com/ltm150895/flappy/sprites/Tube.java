@@ -19,6 +19,8 @@ public class Tube {
     private Random rand;
     private Rectangle boundsTop, boundsBottom;
 
+    private boolean clearedFlag = false;
+
     public Tube(float x){
         topTube = new Texture("toptube.png");
         bottomTube = new Texture("bottomtube.png");
@@ -54,10 +56,20 @@ public class Tube {
 
         boundsTop.setPosition(postopTube.x, postopTube.y);
         boundsBottom.setPosition(posbottomTube.x, posbottomTube.y);
+        clearedFlag = false;
     }
 
     public boolean collides(Rectangle player){
         return player.overlaps(boundsTop) || player.overlaps(boundsBottom);
+    }
+
+    public boolean cleared(Rectangle player){
+        if((!clearedFlag) && (player.x >= postopTube.x)){
+            clearedFlag = true;
+            return clearedFlag;
+        }else{
+            return false;
+        }
     }
 
     public void dispose(){

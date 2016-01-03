@@ -17,6 +17,8 @@ public class PlayState extends State {
     private static final int TUBE_COUNT = 4;
     private static final int GROUND_Y_OFFSET = -50;
 
+    private int score =0;
+
     private Bird bird;
     private Texture bg;
     private Texture ground;
@@ -67,6 +69,11 @@ public class PlayState extends State {
 
             if(tube.collides(bird.getBounds())){
                 dead();
+            }
+
+            if(tube.cleared(bird.getBounds())){
+                score++;
+                System.out.println("Score = " + score);
             }
         }
 
