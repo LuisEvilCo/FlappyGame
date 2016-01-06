@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.ltm150895.flappy.Beginning;
 import com.ltm150895.flappy.sprites.Bird;
+import com.ltm150895.flappy.sprites.Bonus;
 import com.ltm150895.flappy.sprites.Tube;
 
 /**
@@ -30,6 +30,8 @@ public class PlayState extends State {
 
     private GlyphLayout glyphLayout;
     private float scoreStringWidth;
+
+    private Bonus star;
     public PlayState(GameStateManager gsm) {
         super(gsm);
         bird = new Bird(25,Beginning.HEIGHT/2);
@@ -48,6 +50,7 @@ public class PlayState extends State {
         glyphLayout = new GlyphLayout();
         glyphLayout.setText(Beginning.titleFont, Integer.toString(score));
         scoreStringWidth = glyphLayout.width;
+        star = new Bonus(tubes.get(1).getPosTopTube().x , tubes.get(1).getPosTopTube().y);
     }
 
     @Override
@@ -59,7 +62,7 @@ public class PlayState extends State {
 
     private void dead(){
         //gsm.set(new PlayState(gsm));
-        gsm.set(new MenuState(gsm));
+        gsm.set(new GameOver(gsm,score));
     }
 
     @Override
@@ -85,11 +88,18 @@ public class PlayState extends State {
             }
         }
 
+        if(star.collides(bird.getBounds())){
+            score += 2;
+            System.out.println("bonus!!!");
+        }
+
         if(bird.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET){
             dead();
         }
 
         glyphLayout.setText(Beginning.titleFont, Integer.toString(score));
+
+        star.reposition(tubes.get(1).getPosTopTube().x + tubes.get(1).getTopTube().getWidth() / 4 ,tubes.get(1).getPosTopTube().y - 50 );
 
         cam.update();
     }
@@ -107,6 +117,7 @@ public class PlayState extends State {
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
         Beginning.titleFont.draw(sb,glyphLayout, cam.position.x - scoreStringWidth / 2 , cam.position.y + Gdx.graphics.getHeight() / 8);
+        sb.draw(star.getTexture(), star.getPosition().x, star.getPosition().y);
         sb.end();
     }
 
@@ -118,6 +129,7 @@ public class PlayState extends State {
             tube.dispose();
         }
         ground.dispose();
+        star.dispose();
         System.out.println("PlayState disposed");
     }
 

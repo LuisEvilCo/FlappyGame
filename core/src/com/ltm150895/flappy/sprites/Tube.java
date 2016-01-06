@@ -20,11 +20,9 @@ public class Tube {
     private Rectangle boundsTop, boundsBottom;
 
     private boolean clearedFlag = false;
-
     public Tube(float x){
         topTube = new Texture("toptube.png");
         bottomTube = new Texture("bottomtube.png");
-
         rand = new Random();
 
         postopTube = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
